@@ -7,8 +7,9 @@ import { MSGraphClient } from '@microsoft/sp-http';
 import { ISPHttpClientOptions, SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { IEmprendimiento } from './IEmprendimiento';
 import { FocusZone, List } from 'office-ui-fabric-react';
-import Card from '@mui/material/Card';
-import { CardContent } from '@mui/material';
+import "bootstrap/dist/css/bootstrap.css";
+// import Card from '@mui/material/Card';
+// import { CardContent } from '@mui/material';
 
 
 export default class EmprendimientoSistecredito extends React.Component<IEmprendimientoSistecreditoProps, IEmprendimientoState> {
@@ -69,17 +70,23 @@ export default class EmprendimientoSistecredito extends React.Component<IEmprend
 
   public render(): React.ReactElement<IEmprendimientoSistecreditoProps> {
     console.log(this.state.emprendimientos);
-    return (
-      <div className={styles.emprendimientos__title}>
-        <h1>Emprendimientos</h1>
 
-        {this.state.emprendimientos.filter(emprendimiento => emprendimiento.Estado == "Aprobado" && emprendimiento.Estadopublicaci_x00f3_n == "Activo").map(e => (
-          <Card>
-            <CardContent>
-              Hola como estas
-            </CardContent>
-          </Card>
-        ))}
+    const items = <div className={`row`}>{
+      this.state.emprendimientos.filter(emprendimiento => emprendimiento.Estado == "Aprobado" && emprendimiento.Estadopublicaci_x00f3_n == "Activo").map(e => (
+        <div className={`col ${styles['emprendimientos__card-container']}`}>
+          <p>{e.Nombredelemprendimiento} por {e.Nombrecompleto}</p>
+        </div>
+      ))
+    }</div>;
+
+    console.log(items);
+
+    return (
+      <div className={styles.emprendimientos}>
+        <h1>Emprendimientos</h1>
+        <div className="container-fluid">
+          {items}
+        </div>
       </div>
     );
   }
