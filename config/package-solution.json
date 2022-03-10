@@ -1,0 +1,71 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "emprendimiento-sistecredito-client-side-solution",
+    "id": "be3d8cb8-ea92-4cc8-a1b2-553eeaf2888f",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "isDomainIsolated": false,
+    "webApiPermissionRequests": [
+      {
+        "resource": "Microsoft Graph",
+        "scope": "DeviceManagementApps.Read.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "DeviceManagementApps.ReadWrite.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "DeviceManagementConfiguration.Read.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "DeviceManagementConfiguration.ReadWrite.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "DeviceManagementManagedDevices.Read.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "DeviceManagementManagedDevices.ReadWrite.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "DeviceManagementServiceConfig.Read.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "DeviceManagementServiceConfig.ReadWrite.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Directory.AccessAsUser.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Directory.Read.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Directory.ReadWrite.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "User.Read.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "User.ReadBasic.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "User.ReadWrite.All"
+      },
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/emprendimiento-sistecredito.sppkg"
+  }
+}

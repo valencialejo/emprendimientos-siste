@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "emprendimiento-sistecredito-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/emprendimientoSistecredito/EmprendimientoSistecreditoWebPart.js",
+          "manifest": "./src/webparts/emprendimientoSistecredito/EmprendimientoSistecreditoWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "EmprendimientoSistecreditoWebPartStrings": "lib/webparts/emprendimientoSistecredito/loc/{locale}.js"
+  }
+}
