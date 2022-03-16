@@ -10,4 +10,5 @@ export interface IEmprendimiento{
     Instagram?:string;
     Whatsapp?:string;
     Logo?:string;
+    Logo_url?:string;
 }

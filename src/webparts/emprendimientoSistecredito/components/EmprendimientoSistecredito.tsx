@@ -6,10 +6,72 @@ import { IEmprendimientoState } from './IEmprendimientoState';
 import { MSGraphClient } from '@microsoft/sp-http';
 import { ISPHttpClientOptions, SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { IEmprendimiento } from './IEmprendimiento';
-import { FocusZone, List } from 'office-ui-fabric-react';
-import "bootstrap/dist/css/bootstrap.css";
-// import Card from '@mui/material/Card';
-// import { CardContent } from '@mui/material';
+import { DefaultButton, Button, FocusZone, List } from 'office-ui-fabric-react';
+import 'jquery';
+import 'bootstrap/dist/css/bootstrap.css';
+import '@popperjs/core';
+import { Dropdown, PrimaryButton, IDropdownOption, DropdownMenuItemType } from '@fluentui/react';
+import { borderRadius } from '@mui/system';
+
+
+
+const options: IDropdownOption[] = [
+  { key: 'Vestuario', text: 'Vestuario', },
+  { key: 'Calzado', text: 'Calzado' },
+  { key: 'Bolsos', text: 'Bolsos' },
+  { key: 'Colchones', text: 'Colchones' },
+  { key: 'Autopartes carros y motos', text: 'Autopartes carros y motos' },
+  { key: 'Tecnología', text: 'Tecnología' },
+  { key: 'Ropa Interior', text: 'Ropa Interior' },
+  { key: 'Variedades', text: 'Variedades' },
+  { key: 'Hogar', text: 'Hogar' },
+  { key: 'Telas', text: 'Telas' },
+  { key: 'Jugueteria', text: 'Jugueteria' },
+  { key: 'Opticas', text: 'Opticas' },
+  { key: 'Relojeria y/o Joyeria', text: 'Relojeria y/o Joyeria' },
+  { key: 'Articulos Deportivos', text: 'Articulos Deportivos' },
+  { key: 'Telefonia movil', text: 'Telefonia movil' },
+  { key: 'Papeleria y Variedades', text: 'Papeleria y Variedades' },
+  { key: 'Perfumeria', text: 'Perfumeria' },
+  { key: 'Llantas', text: 'Llantas' },
+  { key: 'Manualidades', text: 'Manualidades' },
+  { key: 'Textiles', text: 'Textiles' },
+  { key: 'Estetica', text: 'Estetica' },
+  { key: 'Enseñanza Automovilistica', text: 'Enseñanza Automovilistica' },
+  { key: 'Ferreteria', text: 'Ferreteria' },
+  { key: 'Odontologia', text: 'Odontologia' },
+  { key: 'Reposteria', text: 'Reposteria' },
+  { key: 'Artículos Religiosos', text: 'Artículos Religiosos' },
+  { key: 'Drogueria', text: 'Drogueria' },
+  { key: 'Iluminacion', text: 'Iluminacion' },
+  { key: 'Muebles', text: 'Muebles' },
+  { key: 'Soat y accesorios', text: 'Soat y accesorios' },
+  { key: 'Bebé', text: 'Bebé' },
+  { key: 'Ingenieria', text: 'Ingenieria' },
+  { key: 'Accesorios', text: 'Accesorios' },
+  { key: 'Cristaleria', text: 'Cristaleria' },
+  { key: 'Dama', text: 'Dama' },
+  { key: 'Deportivo', text: 'Deportivo' },
+  { key: 'Fajas', text: 'Fajas' },
+  { key: 'Infantil', text: 'Infantil' },
+  { key: 'Pijamas', text: 'Pijamas' },
+  { key: 'Uniformes', text: 'Uniformes' },
+  { key: 'Juvenil', text: 'Juvenil' },
+  { key: 'Cascos', text: 'Cascos' },
+  { key: 'Viajes', text: 'Viajes' },
+  { key: 'Educación', text: 'Educación' },
+  { key: 'Veterinaria', text: 'Veterinaria' },
+  { key: 'Tatuajes y Accesorios', text: 'Tatuajes y Accesorios' },
+  { key: 'Terapeutica', text: 'Terapeutica' },
+  { key: 'Restaurante', text: 'Restaurante' },
+  { key: 'Publicidad', text: 'Publicidad' },
+  { key: 'Electrodomésticos', text: 'Electrodomésticos' },
+  { key: 'Producción musical', text: 'Producción musical' },
+  { key: 'Alimentos', text: 'Alimentos' },
+  { key: 'Servicios', text: 'Servicios' },
+  { key: 'Supermercados', text: 'Supermercados' },
+
+];
 
 
 export default class EmprendimientoSistecredito extends React.Component<IEmprendimientoSistecreditoProps, IEmprendimientoState> {
@@ -20,6 +82,12 @@ export default class EmprendimientoSistecredito extends React.Component<IEmprend
     this.state = {
       emprendimiento: undefined,
       emprendimientos: [],
+      categorias_: [],
+      categorias: [{ key: "Mostrar todo", text: "Mostrar todo", itemType: DropdownMenuItemType.Normal }, { key: "divisor-1", text: '-', itemType: DropdownMenuItemType.Divider }],
+      busqueda_: '',
+      busqueda: 'Mostrar todo',
+      filtroCategoria_: true,
+      filtroCategoria: true,
     };
   }
 
@@ -45,6 +113,7 @@ export default class EmprendimientoSistecredito extends React.Component<IEmprend
 
       var Emprendimientos: Array<IEmprendimiento> = new Array<IEmprendimiento>();
       response.map(item => {
+
         let emprendimiento: IEmprendimiento = {
           Nombredelemprendimiento: item.Nombredelemprendimiento,
           Nombrecompleto: item.Nombrecompleto,
@@ -56,35 +125,81 @@ export default class EmprendimientoSistecredito extends React.Component<IEmprend
           Facebook: item.Facebook,
           Instagram: item.Instagram,
           Whatsapp: item.Whatsapp,
-          Logo: item.Logo
+          Logo: item.Logo,
+          Logo_url: item.Logo_url
         };
-
+        this.setOptions(item.Categor_x00ed_a);
         this.setState({ emprendimiento: emprendimiento });
         Emprendimientos.push(this.state.emprendimiento);
       });
 
       this.setState({ emprendimientos: Emprendimientos });
+
       // console.log(this.state.emprendimientos);
     });
   }
 
-  public render(): React.ReactElement<IEmprendimientoSistecreditoProps> {
-    console.log(this.state.emprendimientos);
+  public onClick = (): void => {
+    this.setState({ busqueda: this.state.busqueda_ });
+    this.setState({ filtroCategoria: this.state.filtroCategoria_ });
+  }
 
-    const items = <div className={`row`}>{
-      this.state.emprendimientos.filter(emprendimiento => emprendimiento.Estado == "Aprobado" && emprendimiento.Estadopublicaci_x00f3_n == "Activo").map(e => (
-        <div className={`col ${styles['emprendimientos__card-container']}`}>
-          <p>{e.Nombredelemprendimiento} por {e.Nombrecompleto}</p>
+  public onDropdownChange = (event: React.FormEvent<HTMLDivElement>, item: IDropdownOption): void => {
+    this.setState({ busqueda_: item.key as string });
+
+    if (item.key as string == "Mostrar todo") {
+      this.setState({ filtroCategoria_: true });
+    }
+    else {
+      this.setState({ filtroCategoria_: false });
+    }
+
+  }
+
+  public setOptions(item: string): void {
+    if (!this.state.categorias_.includes(item)) {
+      this.state.categorias_.push(item);
+      this.state.categorias.push({ key: item, text: item },);
+    }
+  }
+
+  public render(): React.ReactElement<IEmprendimientoSistecreditoProps> {
+    console.log(this.state.categorias);
+    console.log(this.props.siteURL);
+    const items = <div className={`row ${styles['emprendimientos__fix-margin']}`}>{
+      this.state.emprendimientos.filter(emprendimiento => emprendimiento.Estado == "Aprobado" && emprendimiento.Estadopublicaci_x00f3_n == "Activo" && (this.state.filtroCategoria || emprendimiento.Categor_x00ed_a == this.state.busqueda)).map(e => (
+        <div className={`col ${styles['emprendimientos__card-container']} ${styles['emprendimientos__fix-padding']}`}>
+          <div className={styles.emprendimientos__contenido}>{e.Nombredelemprendimiento}</div>
+          <img src={e.Logo_url} className={styles.emprendimientos__logo}/>
         </div>
       ))
     }</div>;
 
-    console.log(items);
-
     return (
       <div className={styles.emprendimientos}>
-        <h1>Emprendimientos</h1>
-        <div className="container-fluid">
+        <h1 className={styles.emprendimientos__title}>¡Es posible crecer juntos!</h1>
+        <p>En este espacio encontrarás los emprendimientos de tus compañeros. Échale una mirada y cuando necesites algún producto o servicio apóyalos con tu compra:</p>
+        <div className={`container-fluid ${styles.emprendimientos__buscador}`}>
+          <div className={`row`}>
+            <div className={`col-6 ${styles['emprendimientos__fix-padding']}`}>
+              <Dropdown
+                placeholder="Selecciona una categoría"
+                selectedKey={this.state.busqueda_}
+                label="Categorías:"
+                options={this.state.categorias}
+                onChange={this.onDropdownChange}
+                styles={{
+                  label:`${styles['emprendimientos__text--RedHat']} ${styles['emprendimientos__text--sm']} ${styles['emprendimientos__text--normal']}`,
+                }}
+              />
+            </div>
+            <div className={`col-6 ${styles['emprendimientos__fix-padding']}`}>
+              <button onClick={this.onClick} className={`${styles.emprendimientos__boton} ${styles["emprendimientos__text--sm"]}`}>Buscar</button>
+            </div>
+          </div>
+        </div>
+
+        <div className={`container-fluid ${styles.emprendimientos__main} ${styles['emprendimientos__fix-padding']}`}>
           {items}
         </div>
       </div>

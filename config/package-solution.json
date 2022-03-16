@@ -63,6 +63,10 @@
         "resource": "Microsoft Graph",
         "scope": "User.ReadWrite.All"
       },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "User.ManageIdentities.All"
+      }
     ]
   },
   "paths": {
