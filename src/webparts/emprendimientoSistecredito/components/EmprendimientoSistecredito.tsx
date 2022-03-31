@@ -10,10 +10,9 @@ import { DefaultButton, Button, FocusZone, List } from 'office-ui-fabric-react';
 import 'jquery';
 import 'bootstrap/dist/css/bootstrap.css';
 import '@popperjs/core';
-import { Dropdown, PrimaryButton, IDropdownOption, DropdownMenuItemType } from '@fluentui/react';
-import { borderRadius } from '@mui/system';
-
-
+import { Dropdown, Modal, IDropdownOption, DropdownMenuItemType } from '@fluentui/react';
+import { useId, useBoolean } from '@fluentui/react-hooks';
+import { DetailsModal } from './DetailsModal';
 
 const options: IDropdownOption[] = [
   { key: 'Vestuario', text: 'Vestuario', },
@@ -88,7 +87,25 @@ export default class EmprendimientoSistecredito extends React.Component<IEmprend
       busqueda: 'Mostrar todo',
       filtroCategoria_: true,
       filtroCategoria: true,
+      detalles:false,
     };
+
+    this.handler=this.handler.bind(this);
+    this.buttonClick=this.buttonClick.bind(this);
+  }
+
+  handler(){
+    this.setState({
+      detalles:false
+    })
+  }
+
+  private buttonClick(e,id){
+    e.preventDefault();
+    this.setState({
+      detalles:true,
+      id:id
+    })
   }
 
   public componentDidMount(): void {
@@ -128,7 +145,7 @@ export default class EmprendimientoSistecredito extends React.Component<IEmprend
           Logo: item.Logo,
           Logo_url: item.Logo_url
         };
-        this.setOptions(item.Categor_x00ed_a);
+        this.setOptions(item.Categor_x00ed_a, item.Estado, item.Estadopublicaci_x00f3_n);
         this.setState({ emprendimiento: emprendimiento });
         Emprendimientos.push(this.state.emprendimiento);
       });
@@ -156,10 +173,10 @@ export default class EmprendimientoSistecredito extends React.Component<IEmprend
 
   }
 
-  public setOptions(item: string): void {
-    if (!this.state.categorias_.includes(item)) {
-      this.state.categorias_.push(item);
-      this.state.categorias.push({ key: item, text: item },);
+  public setOptions(Categoria: string, Estado: string, Estadopublicaci_x00f3_n: string,): void {
+    if (!this.state.categorias_.includes(Categoria) && Estado == "Aprobado" && Estadopublicaci_x00f3_n == "Activo") {
+      this.state.categorias_.push(Categoria);
+      this.state.categorias.push({ key: Categoria, text: Categoria },);
     }
   }
 
@@ -168,9 +185,12 @@ export default class EmprendimientoSistecredito extends React.Component<IEmprend
     console.log(this.props.siteURL);
     const items = <div className={`row ${styles['emprendimientos__fix-margin']}`}>{
       this.state.emprendimientos.filter(emprendimiento => emprendimiento.Estado == "Aprobado" && emprendimiento.Estadopublicaci_x00f3_n == "Activo" && (this.state.filtroCategoria || emprendimiento.Categor_x00ed_a == this.state.busqueda)).map(e => (
-        <div className={`col ${styles['emprendimientos__card-container']} ${styles['emprendimientos__fix-padding']}`}>
-          <div className={styles.emprendimientos__contenido}>{e.Nombredelemprendimiento}</div>
-          <img src={e.Logo_url} className={styles.emprendimientos__logo}/>
+        <div className={`col ${styles['emprendimientos__card-container']} ${styles['emprendimientos__fix-padding']}`} onClick={()=>console.log('Bien')}>
+          <div className={styles.emprendimientos__contenido}>
+            <span className={`${styles['emprendimientos__text--lg']} ${styles['emprendimientos__text--bd']} ${styles['emprendimientos__text--RedHat']}`}>{e.Nombredelemprendimiento}</span><br />
+            <span className={`${styles['emprendimientos__text--xs']} ${styles['emprendimientos__text--RedHat']}`}>{e.Categor_x00ed_a}</span>
+          </div>
+          <img src={e.Logo_url} className={styles.emprendimientos__logo} />
         </div>
       ))
     }</div>;
@@ -189,7 +209,7 @@ export default class EmprendimientoSistecredito extends React.Component<IEmprend
                 options={this.state.categorias}
                 onChange={this.onDropdownChange}
                 styles={{
-                  label:`${styles['emprendimientos__text--RedHat']} ${styles['emprendimientos__text--sm']} ${styles['emprendimientos__text--normal']}`,
+                  label: `${styles['emprendimientos__text--RedHat']} ${styles['emprendimientos__text--sm']} ${styles['emprendimientos__text--normal']}`,
                 }}
               />
             </div>

@@ -10,4 +10,6 @@ export interface IEmprendimientoState{
     busqueda:string;
     filtroCategoria_:Boolean;
     filtroCategoria:Boolean;
+    detalles:boolean;
+    id:string;
 }

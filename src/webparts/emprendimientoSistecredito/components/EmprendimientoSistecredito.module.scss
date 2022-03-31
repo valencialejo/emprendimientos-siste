@@ -12,7 +12,7 @@ html,body{
   position: relative;
   height: 100%;
   font-family: 'Red Hat Display', sans-serif;
-  width: 60vw;
+  // width: 60vw;
 
   &__title{
     font-size: 1.5rem;
@@ -33,15 +33,22 @@ html,body{
 
   &__card-container{
     position: relative;
-    background-color: #FFFFFF;
+    background-color: rgba(255,255,255,1);
     min-height: 259px;
     max-height: 259px;
     min-width: 254px;
     max-width: 254px;
+    z-index: 1;
     margin:0 30px 45px 0;
     flex-grow: 0 !important;
     border-radius: 12px;
     box-shadow: 0px 3px 6px #00000029;
+    &:hover .emprendimientos__logo{
+      opacity: 0.2;
+    }
+    &:hover .emprendimientos__contenido{
+      opacity: 1;
+    }
   }
 
   &__dropdown{
@@ -52,14 +59,10 @@ html,body{
     position: absolute;
     height: 100%;
     width: 100%;
+    margin-top: 109px;
+    text-align: center;
     opacity: 0;
     z-index: 2;
-    &:hover ~ .emprendimientos__logo{
-      opacity: 0.2;
-    }
-    &:hover{
-      opacity: 1;
-    }
   }
 
   &__logo{
@@ -68,7 +71,7 @@ html,body{
     height: 100%;
     border-radius: 12px;
     opacity: 1;
-    z-index:1;
+    z-index:2;
   }
 
   &__boton{
@@ -86,14 +89,20 @@ html,body{
   }
 
   &__text{
-    &--lg{
+    &--xl{
       font-size: 24px;
+    }
+    &--lg{
+      font-size: 20px;
     }
     &--md{
       font-size: 16px;
     }
     &--sm{
       font-size: 14px;
+    }
+    &--xs{
+      font-size: 11px;
     }
     &--RedHat{
       font-family: 'Red Hat Display', sans-serif;
@@ -103,6 +112,9 @@ html,body{
     }
     &--light{
       opacity: 0.5;
+    }
+    &--bd{
+      font-weight: bold;
     }
   }
 }

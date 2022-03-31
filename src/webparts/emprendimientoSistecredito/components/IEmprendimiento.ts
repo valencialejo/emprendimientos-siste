@@ -1,4 +1,5 @@
 export interface IEmprendimiento{
+    Identificador?:string;
     Nombredelemprendimiento?:string;
     Nombrecompleto?:string;
     Estado?:string;
